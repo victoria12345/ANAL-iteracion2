@@ -191,17 +191,16 @@ int quicksort(int* tabla, int ip, int iu){
 
 int partir(int* tabla, int ip, int iu, int *pos){
 
-
-	int m;
 	int k;
-	int i,j;
+	int i;
 	int ob = 0;
 
-	m = medio(tabla, ip, iu, pos);
+	*pos = ip;
+
 	k = tabla[*pos];
 
 	swap(&tabla[ip], &tabla[*pos]);
-
+	
 	*pos = ip;
 
 	for(i = ip + 1; i <= iu; i++ ){
@@ -212,8 +211,8 @@ int partir(int* tabla, int ip, int iu, int *pos){
 			(*pos)++;
 			swap(&tabla[i], &tabla[*pos]);
 		}
-
 	}
+
 	swap(&tabla[ip], &tabla[*pos]);
 
 	return ob;
