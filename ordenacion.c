@@ -15,8 +15,10 @@
 #include "permutaciones.h"
 
 int merge(int* tabla, int ip, int iu, int imedio);
-int partir(int* tabla, int ip, int iu, int *pos);
+int partir(int* tabla, int ip, int iu, int *pos,pfunc_medio metodo);
 int medio(int *tabla, int ip, int iu,int *pos);
+int Mediana (int* tabla, int ip, int iu, int* pos);
+int medio_avg(int *tabla, int ip, int iu, int *pos);
 
 /***************************************************/
 /* Funcion: BubbleSort Fecha: 12-10-2017           */
@@ -170,15 +172,15 @@ int merge(int* tabla, int ip, int iu, int imedio){
 int quicksort(int* tabla, int ip, int iu){
 
 	int pos = 0;
-	int cont = 0;
+	int ob = 0;
 
 	if(ip > iu) return ERR;
 
-	else if(ip == iu) return OK;
+	else if(ip == iu) return ob;
 
 	else{
 
-		cont += partir(tabla, ip, iu, &pos);
+		ob += partir(tabla, ip, iu, &pos, Mediana);
 
 		if( ip < pos - 1)
 			quicksort(tabla, ip, pos - 1);
@@ -186,10 +188,10 @@ int quicksort(int* tabla, int ip, int iu){
 		if( pos + 1 < iu)
 			quicksort(tabla, pos + 1, iu);
 	}
-	return cont;
+	return ob;
 }
 
-int partir(int* tabla, int ip, int iu, int *pos){
+int partir(int* tabla, int ip, int iu, int *pos, pfunc_medio metodo){
 
 	int k;
 	int i;
@@ -200,7 +202,7 @@ int partir(int* tabla, int ip, int iu, int *pos){
 	k = tabla[*pos];
 
 	swap(&tabla[ip], &tabla[*pos]);
-	
+
 	*pos = ip;
 
 	for(i = ip + 1; i <= iu; i++ ){
@@ -225,4 +227,40 @@ int medio(int *tabla, int ip, int iu,int *pos){
 	*pos = ip;
 
 	return 0;
+}
+
+int medio_avg(int *tabla, int ip, int iu, int *pos){
+	*pos = (ip + iu) / 2;
+
+	return 0;
+}
+
+
+int Mediana (int* tabla, int ip, int iu, int* pos){
+	int im, ob;
+
+	ob++;
+	if (tabla[ip] <= tabla[im]){
+		ob++;
+		if(tabla[iu] <= tabla[im]){
+			ob++;
+			if(tabla[ip] <= tabla[iu]){
+				*pos = iu;
+			}
+			else *pos = ip;
+		}
+		else *pos = im;
+	}
+
+	else {
+		ob++;
+		if(tabla[im] <= tabla[iu]){
+			ob++;
+			if(tabla[iu] <= tabla[ip]){
+				*pos = iu;
+			}
+			else  *pos = ip;
+		}
+		else *pos = im;
+	}
 }
