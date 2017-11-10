@@ -49,7 +49,7 @@ int main(int argc, char** argv)
     exit(-1);
   }
 
-  ret = quicksort(perm, 0, tamano-1);
+  ret = quicksort(perm, 0, tamano-1, Mediana);
 
   if (ret == ERR) {
     printf("Error: Error en BubbleSort\n");

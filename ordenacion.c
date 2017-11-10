@@ -14,11 +14,6 @@
 #include "ordenacion.h"
 #include "permutaciones.h"
 
-int merge(int* tabla, int ip, int iu, int imedio);
-int partir(int* tabla, int ip, int iu, int *pos,pfunc_medio metodo);
-int medio(int *tabla, int ip, int iu,int *pos);
-int Mediana (int* tabla, int ip, int iu, int* pos);
-int medio_avg(int *tabla, int ip, int iu, int *pos);
 
 /***************************************************/
 /* Funcion: BubbleSort Fecha: 12-10-2017           */
@@ -169,25 +164,49 @@ int merge(int* tabla, int ip, int iu, int imedio){
 	return OK;
 }
 
-int quicksort(int* tabla, int ip, int iu){
+int medio(int *tabla, int ip, int iu,int *pos){
 
-	int pos = 0;
+	*pos = ip;
+
+	return 0;
+}
+
+int medio_avg(int *tabla, int ip, int iu, int *pos){
+	*pos = (ip + iu) / 2;
+
+	return 0;
+}
+
+
+int Mediana (int* tabla, int ip, int iu, int* pos){
+	int im = (ip + iu)/2;
 	int ob = 0;
 
-	if(ip > iu) return ERR;
-
-	else if(ip == iu) return ob;
-
-	else{
-
-		ob += partir(tabla, ip, iu, &pos, Mediana);
-
-		if( ip < pos - 1)
-			quicksort(tabla, ip, pos - 1);
-
-		if( pos + 1 < iu)
-			quicksort(tabla, pos + 1, iu);
+	ob++;
+	if (tabla[ip] <= tabla[im]){
+		ob++;
+		if(tabla[iu] <= tabla[im]){
+			ob++;
+			if(tabla[ip] <= tabla[iu]){
+				*pos = iu;
+			}
+			else *pos = ip;
+		}
+		else *pos = im;
 	}
+
+	else {
+		ob++;
+		if(tabla[im] <= tabla[iu]){
+			ob++;
+			if(tabla[iu] <= tabla[ip]){
+				*pos = iu;
+			}
+			else  *pos = ip;
+		}
+		else *pos = im;
+	}
+
 	return ob;
 }
 
@@ -222,45 +241,25 @@ int partir(int* tabla, int ip, int iu, int *pos, pfunc_medio metodo){
 }
 
 
-int medio(int *tabla, int ip, int iu,int *pos){
 
-	*pos = ip;
+int quicksort(int* tabla, int ip, int iu, pfunc_medio metodo){
 
-	return 0;
-}
+	int pos = 0;
+	int ob = 0;
 
-int medio_avg(int *tabla, int ip, int iu, int *pos){
-	*pos = (ip + iu) / 2;
+	if(ip > iu) return ERR;
 
-	return 0;
-}
+	else if(ip == iu) return ob;
 
+	else{
 
-int Mediana (int* tabla, int ip, int iu, int* pos){
-	int im, ob;
+		ob += partir(tabla, ip, iu, &pos, metodo);
 
-	ob++;
-	if (tabla[ip] <= tabla[im]){
-		ob++;
-		if(tabla[iu] <= tabla[im]){
-			ob++;
-			if(tabla[ip] <= tabla[iu]){
-				*pos = iu;
-			}
-			else *pos = ip;
-		}
-		else *pos = im;
+		if( ip < pos - 1)
+			quicksort(tabla, ip, pos - 1, metodo);
+
+		if( pos + 1 < iu)
+			quicksort(tabla, pos + 1, iu, metodo);
 	}
-
-	else {
-		ob++;
-		if(tabla[im] <= tabla[iu]){
-			ob++;
-			if(tabla[iu] <= tabla[ip]){
-				*pos = iu;
-			}
-			else  *pos = ip;
-		}
-		else *pos = im;
-	}
+	return ob;
 }

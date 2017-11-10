@@ -1,6 +1,6 @@
 /**
  *
- * Descripcion: Funciones de cabecera para ordenacion 
+ * Descripcion: Funciones de cabecera para ordenacion
  *
  * Fichero: ordenacion.h
  * Autor: Carlos Aguirre
@@ -21,6 +21,7 @@
 
 /* definiciones de tipos */
 typedef int (* pfunc_ordena)(int*, int, int);
+typedef int (*pfunc_medio)(int*, int, int, int*);
 
 /* Funciones */
 
@@ -30,5 +31,14 @@ int merge(int* tabla, int ip, int iu, int imedio);
 
 int mergesort(int* tabla, int ip, int iu);
 
+int medio(int *tabla, int ip, int iu,int *pos);
+
+int Mediana (int* tabla, int ip, int iu, int* pos);
+
+int medio_avg(int *tabla, int ip, int iu, int *pos);
+
+int quicksort(int* tabla, int ip, int iu, pfunc_medio metodo);
+
+int partir(int* tabla, int ip, int iu, int *pos, pfunc_medio metodo);
 
 #endif
