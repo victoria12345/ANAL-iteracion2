@@ -61,37 +61,6 @@ int BubbleSort(int* tabla, int ip, int iu){
 	return ob;
 }
 
-
-/***************************************************/
-/* Funcion: mergesort  Fecha: 22-10-2017           */
-/* Autores: Victoria Pelayo e Igacio Rabuñal       */
-/*                                                 */
-/* Ordena números de menor a mayor de una tabla    */
-/* dada entre la posicion ip e iu. Para ello va a  */
-/* llamar a otra funcion.Es un algoritmo recursivo */
-/*                                                 */
-/* Entrada:                                        */
-/* int* tabla: tabla que se va a ordenar           */
-/* int ip: posición desde donde se va a ordenar    */
-/* int iu: posición hasta donde se va a ordenar    */
-/* Salida:                                         */
-/* count:numero de veces que se ha realizado la ob */
-/***************************************************/
-int mergesort(int* tabla, int ip, int iu){
-
-	int M = (iu + ip)/2;
-	int count = 0;
-
-	if (ip == iu) return count;
-
-	count += mergesort(tabla, ip, M);
-	count += mergesort(tabla, M + 1, iu);
-	count += merge (tabla, ip, iu, M);
-
-	return count;
-}
-
-
 /***************************************************/
 /* Funcion: merge Fecha: 22-10-2017           */
 /* Autores: Victoria Pelayo e Igacio Rabuñal       */
@@ -161,7 +130,36 @@ int merge(int* tabla, int ip, int iu, int imedio){
 
 	free(aux);
 
-	return OK;
+	return count;
+}
+
+/***************************************************/
+/* Funcion: mergesort  Fecha: 22-10-2017           */
+/* Autores: Victoria Pelayo e Igacio Rabuñal       */
+/*                                                 */
+/* Ordena números de menor a mayor de una tabla    */
+/* dada entre la posicion ip e iu. Para ello va a  */
+/* llamar a otra funcion.Es un algoritmo recursivo */
+/*                                                 */
+/* Entrada:                                        */
+/* int* tabla: tabla que se va a ordenar           */
+/* int ip: posición desde donde se va a ordenar    */
+/* int iu: posición hasta donde se va a ordenar    */
+/* Salida:                                         */
+/* count:numero de veces que se ha realizado la ob */
+/***************************************************/
+int mergesort(int* tabla, int ip, int iu){
+
+	int M = (iu + ip)/2;
+	int count = 0;
+
+	if (ip == iu) return count;
+
+	count += mergesort(tabla, ip, M);
+	count += mergesort(tabla, M + 1, iu);
+	count += merge (tabla, ip, iu, M);
+
+	return count;
 }
 
 int medio(int *tabla, int ip, int iu,int *pos){
@@ -216,6 +214,8 @@ int partir(int* tabla, int ip, int iu, int *pos, pfunc_medio metodo){
 	int i;
 	int ob = 0;
 
+	ob = metodo(tabla,ip,iu,pos);
+
 	*pos = ip;
 
 	k = tabla[*pos];
@@ -256,10 +256,10 @@ int quicksort(int* tabla, int ip, int iu, pfunc_medio metodo){
 		ob += partir(tabla, ip, iu, &pos, metodo);
 
 		if( ip < pos - 1)
-			quicksort(tabla, ip, pos - 1, metodo);
+			ob += quicksort(tabla, ip, pos - 1, metodo);
 
 		if( pos + 1 < iu)
-			quicksort(tabla, pos + 1, iu, metodo);
+			ob += quicksort(tabla, pos + 1, iu, metodo);
 	}
 	return ob;
 }
