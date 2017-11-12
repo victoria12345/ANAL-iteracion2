@@ -75,7 +75,7 @@ int BubbleSort(int* tabla, int ip, int iu){
 /* int imedio: posicion media de la tabla, a ambos */
 /* lados ya esta respectivamente ordenada.         */
 /* Salida:                                         */
-/* count: numero de veces que se ha realizado la ob*/
+/* ob: numero de veces que se ha realizado la ob*/
 /***************************************************/
 int merge(int* tabla, int ip, int iu, int imedio){
 
@@ -83,7 +83,7 @@ int merge(int* tabla, int ip, int iu, int imedio){
 	int i = ip;
 	int k = 0;
 	int j = imedio +1;
-	int count = 0;
+	int ob = 0;
 
 	aux = (int*)malloc(sizeof(aux[0]) * (iu - ip + 1));
 
@@ -91,22 +91,26 @@ int merge(int* tabla, int ip, int iu, int imedio){
 
 	while (i <= imedio && j<= iu){
 
-		count++;
+		ob++;
 
 		if (tabla[i] < tabla[j]){
 			aux[k] = tabla[i];
 			i++;
 		}
+
 		else{
 			aux[k] = tabla[j];
 			j++;
 		}
+
 		k++;
 	}
 
 	if(i > imedio){
 		while(j <= iu){
+
 			aux[k] = tabla[j];
+
 			k++;
 			j++;
 		}
@@ -114,7 +118,9 @@ int merge(int* tabla, int ip, int iu, int imedio){
 
 	else if(j > iu){
 		while( i <= imedio){
+
 			aux[k] = tabla[i];
+
 			k++;
 			i++;
 		}
@@ -130,7 +136,7 @@ int merge(int* tabla, int ip, int iu, int imedio){
 
 	free(aux);
 
-	return count;
+	return ob;
 }
 
 /***************************************************/
@@ -146,22 +152,36 @@ int merge(int* tabla, int ip, int iu, int imedio){
 /* int ip: posición desde donde se va a ordenar    */
 /* int iu: posición hasta donde se va a ordenar    */
 /* Salida:                                         */
-/* count:numero de veces que se ha realizado la ob */
+/* ob:numero de veces que se ha realizado la ob */
 /***************************************************/
 int mergesort(int* tabla, int ip, int iu){
 
 	int M = (iu + ip)/2;
-	int count = 0;
+	int ob = 0;
 
-	if (ip == iu) return count;
+	if (ip == iu) return ob;
 
-	count += mergesort(tabla, ip, M);
-	count += mergesort(tabla, M + 1, iu);
-	count += merge (tabla, ip, iu, M);
+	ob += mergesort(tabla, ip, M);
+	ob += mergesort(tabla, M + 1, iu);
+	ob += merge (tabla, ip, iu, M);
 
-	return count;
+	return ob;
 }
 
+/***************************************************/
+/* Funcion: medio Fecha: 10-11-2017                */
+/* Autores: Victoria Pelayo e Igacio Rabuñal       */
+/*                                                 */
+/* OElige como pivote el elemento de la primera    */
+/* posicion.                                       */
+/*                                                 */
+/* Entrada:                                        */
+/* int* tabla: tabla que se va a ordenar           */
+/* int ip: posición desde donde se va a ordenar    */
+/* int pos: posición del pivote                    */
+/* Salida:                                         */
+/* int: numero de veces que se ha realizado la ob  */
+/***************************************************/
 int medio(int *tabla, int ip, int iu,int *pos){
 
 	*pos = ip;
@@ -169,45 +189,97 @@ int medio(int *tabla, int ip, int iu,int *pos){
 	return 0;
 }
 
+/***************************************************/
+/* Funcion: medio_avg Fecha: 10-11-2017            */
+/* Autores: Victoria Pelayo e Igacio Rabuñal       */
+/*                                                 */
+/* OElige como pivote el elemento del medio        */
+/*                                                 */
+/* Entrada:                                        */
+/* int* tabla: tabla que se va a ordenar           */
+/* int ip: posición desde donde se va a ordenar    */
+/* int pos: posición del pivote                    */
+/* Salida:                                         */
+/* int: numero de veces que se ha realizado la ob  */
+/***************************************************/
 int medio_avg(int *tabla, int ip, int iu, int *pos){
+
 	*pos = (ip + iu) / 2;
 
 	return 0;
 }
 
-
+/***************************************************/
+/* Funcion: medio_stmt Fecha: 10-11-2017           */
+/* Autores: Victoria Pelayo e Igacio Rabuñal       */
+/*                                                 */
+/* Elige como pivote el elemento que se encuentra  */
+/* en medio de los tres que se le pasa.            */
+/*                                                 */
+/* Entrada:                                        */
+/* int* tabla: tabla que se va a ordenar           */
+/* int ip: posición desde donde se va a ordenar    */
+/* int pos: posición del pivote                    */
+/* Salida:                                         */
+/* int: numero de veces que se ha realizado la ob  */
+/***************************************************/
 int Mediana (int* tabla, int ip, int iu, int* pos){
+
 	int im = (ip + iu)/2;
 	int ob = 0;
 
 	ob++;
+
 	if (tabla[ip] <= tabla[im]){
 		ob++;
+
 		if(tabla[iu] <= tabla[im]){
 			ob++;
+
 			if(tabla[ip] <= tabla[iu]){
 				*pos = iu;
 			}
+
 			else *pos = ip;
 		}
+
 		else *pos = im;
 	}
 
 	else {
 		ob++;
+
 		if(tabla[im] <= tabla[iu]){
 			ob++;
+
 			if(tabla[iu] <= tabla[ip]){
 				*pos = iu;
 			}
+
 			else  *pos = ip;
 		}
+
 		else *pos = im;
 	}
 
 	return ob;
 }
 
+/***************************************************/
+/* Funcion: partir Fecha: 10-11-2017               */
+/* Autores: Victoria Pelayo e Igacio Rabuñal       */
+/*                                                 */
+/* Funcion recursiva de QuickSort. Ordena el pivote*/
+/* obtenido mediante a la llamada a una función.   */
+/*                                                 */
+/* Entrada:                                        */
+/* int* tabla: tabla que se va a ordenar           */
+/* int ip: posición desde donde se va a ordenar    */
+/* int pos: posición del pivote                    */
+/* pfunc_medio metodo: devuelve el pivote          */
+/* Salida:                                         */
+/* int: numero de veces que se ha realizado la ob  */
+/***************************************************/
 int partir(int* tabla, int ip, int iu, int *pos, pfunc_medio metodo){
 
 	int k;
@@ -230,6 +302,7 @@ int partir(int* tabla, int ip, int iu, int *pos, pfunc_medio metodo){
 
 		if(tabla[i] < k){
 			(*pos)++;
+
 			swap(&tabla[i], &tabla[*pos]);
 		}
 	}
@@ -240,8 +313,20 @@ int partir(int* tabla, int ip, int iu, int *pos, pfunc_medio metodo){
 
 }
 
-
-
+/***************************************************/
+/* Funcion: partir Fecha: 10-11-2017               */
+/* Autores: Victoria Pelayo e Igacio Rabuñal       */
+/*                                                 */
+/* QuickSort ordena una tabla                      */
+/*                                                 */
+/* Entrada:                                        */
+/* int* tabla: tabla que se va a ordenar           */
+/* int ip: posición desde donde se va a ordenar    */
+/* int pos: posición del pivote                    */
+/* pfunc_medio metodo: devuelve el pivote          */
+/* Salida:                                         */
+/* int: numero de veces que se ha realizado la ob  */
+/***************************************************/
 int quicksort(int* tabla, int ip, int iu, pfunc_medio metodo){
 
 	int pos = 0;
@@ -261,5 +346,23 @@ int quicksort(int* tabla, int ip, int iu, pfunc_medio metodo){
 		if( pos + 1 < iu)
 			ob += quicksort(tabla, pos + 1, iu, metodo);
 	}
+
 	return ob;
+}
+
+/**
+* Estas funciones han sido creadas para llamarlas desde ejercicio5.c
+*/
+
+int quicksort1(int* tabla, int ip, int iu){
+
+	return quicksort(tabla,ip,iu,medio);
+}
+int quicksort2(int* tabla, int ip, int iu){
+
+	return quicksort(tabla,ip,iu,medio_avg);
+}
+int quicksort3(int* tabla, int ip, int iu){
+
+	return quicksort(tabla,ip,iu,medio_stmt);
 }

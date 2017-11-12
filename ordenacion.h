@@ -41,4 +41,10 @@ int quicksort(int* tabla, int ip, int iu, pfunc_medio metodo);
 
 int partir(int* tabla, int ip, int iu, int *pos, pfunc_medio metodo);
 
+int quicksort1(int* tabla, int ip, int iu);
+
+int quicksort1(int* tabla, int ip, int iu);
+
+int quicksort1(int* tabla, int ip, int iu);
+
 #endif
